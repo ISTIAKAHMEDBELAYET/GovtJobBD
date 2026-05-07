@@ -35,7 +35,7 @@ const searchIndex = jobs.map((job) => ({
 
     <article class="page-card search-empty" id="search-empty" hidden>
       <h1>কোনো চাকরি পাওয়া যায়নি</h1>
-      <p>অন্য কিওয়ার্ড বা ক্যাটাগরি দিয়ে আবার সার্চ করুন।</p>
+      <p>অন্য কিওয়ার্ড দিয়ে আবার সার্চ করুন।</p>
     </article>
 
     <script type="application/json" id="search-data" set:html={JSON.stringify(searchIndex)}></script>
@@ -62,65 +62,6 @@ const searchIndex = jobs.map((job) => ({
           .replace(/[০-৯]/g, (digit) => String(banglaDigits.indexOf(digit)))
           .replace(/\s+/g, " ")
           .trim();
-
-      const months = {
-        "জানুয়ারি": 0,
-        "জানুয়ারি": 0,
-        "ফেব্রুয়ারি": 1,
-        "ফেব্রুয়ারি": 1,
-        "মার্চ": 2,
-        "এপ্রিল": 3,
-        "মে": 4,
-        "জুন": 5,
-        "জুলাই": 6,
-        "আগস্ট": 7,
-        "সেপ্টেম্বর": 8,
-        "অক্টোবর": 9,
-        "নভেম্বর": 10,
-        "ডিসেম্বর": 11,
-      };
-
-      const parseBanglaDate = (value) => {
-        const text = normalizeText(value);
-        const monthName = Object.keys(months).find((month) => text.includes(month));
-        if (!monthName) return null;
-        const beforeMonth = text.split(monthName)[0];
-        const dayMatches = beforeMonth.match(/\d+/g);
-        const yearMatch = text.slice(text.indexOf(monthName)).match(/\d{4}/);
-        if (!dayMatches || !yearMatch) return null;
-        const day = Number(dayMatches[dayMatches.length - 1]);
-        const year = Number(yearMatch[0]);
-        return new Date(year, months[monthName], day);
-      };
-
-      const daysBetween = (date) => {
-        if (!date) return Number.POSITIVE_INFINITY;
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const target = new Date(date);
-        target.setHours(0, 0, 0, 0);
-        return Math.round((target.getTime() - today.getTime()) / 86400000);
-      };
-
-      const isWithinPublishedRange = (publishedDate, range) => {
-        if (!range) return true;
-        const published = new Date(publishedDate);
-        const now = new Date();
-        const ageHours = (now.getTime() - published.getTime()) / 3600000;
-        if (range === "24-hours") return ageHours <= 24;
-        if (range === "7-days") return ageHours <= 24 * 7;
-        if (range === "30-days") return ageHours <= 24 * 30;
-        return true;
-      };
-
-      const isWithinDeadlineRange = (deadline, range) => {
-        if (!range) return true;
-        const remainingDays = daysBetween(parseBanglaDate(deadline));
-        if (range === "today") return remainingDays === 0;
-        if (range === "7-days") return remainingDays >= 0 && remainingDays <= 7;
-        if (range === "30-days") return remainingDays >= 0 && remainingDays <= 30;
-        return true;
-      };
 
       const formatDate = (date) =>
         new Intl.DateTimeFormat("en-GB", {
@@ -173,18 +114,13 @@ const searchIndex = jobs.map((job) => ({
       const applyFilters = () => {
         const params = new URLSearchParams(window.location.search);
         const q = normalizeText(params.get("q"));
-        const category = params.get("category") || "";
-        const deadline = params.get("deadline") || "";
-        const published = params.get("published") || "";
 
         if (form) {
           form.elements.namedItem("q").value = params.get("q") || "";
-          form.elements.namedItem("category").value = category;
-          form.elements.namedItem("deadline").value = deadline;
-          form.elements.namedItem("published").value = published;
         }
 
         const filtered = jobs.filter((job) => {
+          if (!q) return true;
           const haystack = normalizeText([
             job.title,
             job.excerpt,
@@ -193,22 +129,14 @@ const searchIndex = jobs.map((job) => ({
             job.categories.join(" "),
             job.categorySlugs.join(" "),
           ].join(" "));
-          const matchesKeyword = !q || haystack.includes(q);
-          const matchesCategory = !category || category === "all-bd-jobs" || job.categorySlugs.includes(category);
-          return matchesKeyword && matchesCategory && isWithinDeadlineRange(job.deadline, deadline) && isWithinPublishedRange(job.publishedDate, published);
+          return haystack.includes(q);
         });
 
         results.innerHTML = filtered.map(renderJob).join("");
         empty.hidden = filtered.length > 0;
 
-        const activeFilters = [];
-        if (q) activeFilters.push(`"${escapeHtml(params.get("q"))}"`);
-        if (category) activeFilters.push(`category: ${escapeHtml(category)}`);
-        if (deadline) activeFilters.push(`deadline: ${escapeHtml(deadline)}`);
-        if (published) activeFilters.push(`published: ${escapeHtml(published)}`);
-
-        summary.innerHTML = activeFilters.length
-          ? `${filtered.length}টি চাকরির ফলাফল পাওয়া গেছে (${activeFilters.join(", ")})`
+        summary.innerHTML = q
+          ? `${filtered.length}টি চাকরির ফলাফল পাওয়া গেছে "${escapeHtml(params.get("q"))}" এর জন্য`
           : `সব চাকরির ফলাফল দেখানো হচ্ছে (${filtered.length}টি)।`;
       };
 
