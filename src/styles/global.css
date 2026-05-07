@@ -864,6 +864,15 @@ textarea {
     font-size: 17px;
   }
 
+  .post-image {
+    float: none;
+    width: min(100%, 350px);
+    max-width: 100%;
+    aspect-ratio: 350 / 194.47;
+    margin: 6px auto 8px;
+    border-radius: 12px;
+  }
+
   .job-info-box {
     display: flex;
     min-width: 0;
@@ -896,21 +905,6 @@ textarea {
     font-size: 17px;
     line-height: 1.45;
     clear: both;
-  }
-
-  /* Mobile post image - 350x194.47px size */
-  .post-image {
-    float: none;
-    width: 100%;
-    max-width: 350px;
-    height: auto;
-    aspect-ratio: 350 / 194.47;
-    margin: 10px auto 12px;
-    border-radius: 12px;
-  }
-
-  .post-image img {
-    aspect-ratio: 350 / 194.47;
   }
 
   .gp-icon {
