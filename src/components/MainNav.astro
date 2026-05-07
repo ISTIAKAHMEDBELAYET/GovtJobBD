@@ -1,5 +1,7 @@
 ---
 import { navItems } from "@/data/site";
+
+const mobileItems = navItems.flatMap((item) => [item, ...(item.children ?? [])]);
 ---
 
 <nav class="main-navigation" aria-label="Primary navigation">
@@ -35,11 +37,16 @@ import { navItems } from "@/data/site";
         <path d="M9.5 3a6.5 6.5 0 0 1 5.17 10.44l4.44 4.45-1.41 1.41-4.45-4.44A6.5 6.5 0 1 1 9.5 3Zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z"></path>
       </svg>
     </a>
-    <a class="mobile-menu-link" href="/category/all-bd-jobs/" aria-label="Menu">
-      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"></path>
-      </svg>
-      <span>Menu</span>
-    </a>
+    <details class="mobile-menu">
+      <summary class="mobile-menu-link" aria-label="Menu">
+        <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z"></path>
+        </svg>
+        <span>Menu</span>
+      </summary>
+      <div class="mobile-menu-panel">
+        {mobileItems.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </details>
   </div>
 </nav>

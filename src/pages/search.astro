@@ -1,14 +1,231 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FilterBox from "@/components/FilterBox.astro";
+import JobCard from "@/components/JobCard.astro";
+
+const jobs = (await getCollection("jobs")).sort(
+  (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime(),
+);
+
+const searchIndex = jobs.map((job) => ({
+  title: job.data.title,
+  slug: job.slug,
+  publishedDate: job.data.publishedDate,
+  author: job.data.author,
+  categories: job.data.categories,
+  categorySlugs: job.data.categorySlugs,
+  postCount: job.data.postCount,
+  deadline: job.data.deadline,
+  image: job.data.image,
+  excerpt: job.data.excerpt,
+}));
 ---
 
-<BaseLayout title="Search জবস - GovtJobBD" description="GovtJobBD চাকরি সার্চ পেজ।" canonicalPath="/search/">
+<BaseLayout title="Search Jobs - GovtJobBD" description="GovtJobBD job search page." canonicalPath="/search/">
   <FilterBox />
-  <main class="container">
-    <article class="page-card">
-      <h1>Search জবস</h1>
-      <p>সার্চ ও ফিল্টার রেজাল্ট এখানে দেখানো হবে। Static v1-এ এই পেজটি সার্চ ফর্মের landing page হিসেবে রাখা হয়েছে।</p>
+  <main class="container search-page">
+    <div class="search-results-header" id="search-summary" aria-live="polite">
+      সব চাকরির ফলাফল দেখানো হচ্ছে।
+    </div>
+
+    <div class="post-list" id="search-results">
+      {jobs.map((job) => <JobCard {...job.data} slug={job.slug} />)}
+    </div>
+
+    <article class="page-card search-empty" id="search-empty" hidden>
+      <h1>কোনো চাকরি পাওয়া যায়নি</h1>
+      <p>অন্য কিওয়ার্ড বা ক্যাটাগরি দিয়ে আবার সার্চ করুন।</p>
     </article>
+
+    <script type="application/json" id="search-data" set:html={JSON.stringify(searchIndex)}></script>
+    <script is:inline>
+      const jobs = JSON.parse(document.getElementById("search-data").textContent || "[]");
+      const form = document.querySelector(".filter-box");
+      const results = document.getElementById("search-results");
+      const summary = document.getElementById("search-summary");
+      const empty = document.getElementById("search-empty");
+
+      const banglaDigits = "০১২৩৪৫৬৭৮৯";
+      const escapeHtml = (value) =>
+        String(value ?? "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[char]);
+
+      const normalizeText = (value) =>
+        String(value ?? "")
+          .toLowerCase()
+          .replace(/[০-৯]/g, (digit) => String(banglaDigits.indexOf(digit)))
+          .replace(/\s+/g, " ")
+          .trim();
+
+      const months = {
+        "জানুয়ারি": 0,
+        "জানুয়ারি": 0,
+        "ফেব্রুয়ারি": 1,
+        "ফেব্রুয়ারি": 1,
+        "মার্চ": 2,
+        "এপ্রিল": 3,
+        "মে": 4,
+        "জুন": 5,
+        "জুলাই": 6,
+        "আগস্ট": 7,
+        "সেপ্টেম্বর": 8,
+        "অক্টোবর": 9,
+        "নভেম্বর": 10,
+        "ডিসেম্বর": 11,
+      };
+
+      const parseBanglaDate = (value) => {
+        const text = normalizeText(value);
+        const monthName = Object.keys(months).find((month) => text.includes(month));
+        if (!monthName) return null;
+        const beforeMonth = text.split(monthName)[0];
+        const dayMatches = beforeMonth.match(/\d+/g);
+        const yearMatch = text.slice(text.indexOf(monthName)).match(/\d{4}/);
+        if (!dayMatches || !yearMatch) return null;
+        const day = Number(dayMatches[dayMatches.length - 1]);
+        const year = Number(yearMatch[0]);
+        return new Date(year, months[monthName], day);
+      };
+
+      const daysBetween = (date) => {
+        if (!date) return Number.POSITIVE_INFINITY;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(date);
+        target.setHours(0, 0, 0, 0);
+        return Math.round((target.getTime() - today.getTime()) / 86400000);
+      };
+
+      const isWithinPublishedRange = (publishedDate, range) => {
+        if (!range) return true;
+        const published = new Date(publishedDate);
+        const now = new Date();
+        const ageHours = (now.getTime() - published.getTime()) / 3600000;
+        if (range === "24-hours") return ageHours <= 24;
+        if (range === "7-days") return ageHours <= 24 * 7;
+        if (range === "30-days") return ageHours <= 24 * 30;
+        return true;
+      };
+
+      const isWithinDeadlineRange = (deadline, range) => {
+        if (!range) return true;
+        const remainingDays = daysBetween(parseBanglaDate(deadline));
+        if (range === "today") return remainingDays === 0;
+        if (range === "7-days") return remainingDays >= 0 && remainingDays <= 7;
+        if (range === "30-days") return remainingDays >= 0 && remainingDays <= 30;
+        return true;
+      };
+
+      const formatDate = (date) =>
+        new Intl.DateTimeFormat("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date(date));
+
+      const renderJob = (job) => `
+        <article class="job-card post type-post status-publish format-standard has-post-thumbnail hentry resize-featured-image" itemtype="https://schema.org/CreativeWork" itemscope>
+          <div class="inside-article">
+            <header class="entry-header">
+              <h2 class="entry-title" itemprop="headline">
+                <a href="/${escapeHtml(job.slug)}/" rel="bookmark">${escapeHtml(job.title)}</a>
+              </h2>
+              <div class="entry-meta">
+                <span class="posted-on"><time class="entry-date published" datetime="${escapeHtml(job.publishedDate)}" itemprop="datePublished">${escapeHtml(formatDate(job.publishedDate))}</time></span>
+                <span class="byline"> by <span class="author vcard" itemprop="author" itemtype="https://schema.org/Person" itemscope><span class="author-name" itemprop="name">${escapeHtml(job.author)}</span></span></span>
+              </div>
+            </header>
+            <div class="post-image">
+              <a href="/${escapeHtml(job.slug)}/">
+                <img src="${escapeHtml(job.image)}" alt="${escapeHtml(job.title)}" width="768" height="427" loading="lazy" itemprop="image" />
+              </a>
+            </div>
+            <div class="job-info-box job-vacancy">
+              <div class="job-label">পদের সংখ্যা:</div>
+              <div class="job-value">${escapeHtml(job.postCount)}</div>
+            </div>
+            <div class="job-info-box job-deadline">
+              <div class="job-label">আবেদনের শেষ তারিখ:</div>
+              <div class="job-value">${escapeHtml(job.deadline)}</div>
+            </div>
+            <div class="entry-summary" itemprop="text">
+              <p> ... <a title="${escapeHtml(job.title)}" class="read-more" href="/${escapeHtml(job.slug)}/" aria-label="Read more about ${escapeHtml(job.title)}">বিস্তারিত পড়ুন</a></p>
+            </div>
+            <footer class="entry-meta entry-footer" aria-label="Entry meta">
+              <span class="cat-links">
+                <span class="gp-icon icon-categories" aria-hidden="true">
+                  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M0 112c0-26.51 21.49-48 48-48h110.014a48 48 0 0 1 43.592 27.907l12.349 26.791A16 16 0 0 0 228.486 128H464c26.51 0 48 21.49 48 48v224c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112z"></path></svg>
+                </span>
+                <span class="screen-reader-text">Categories </span>
+                ${job.categories.map((category, index) => `<a href="/category/${escapeHtml(job.categorySlugs[index])}/" rel="category tag">${escapeHtml(category)}</a>${index < job.categories.length - 1 ? "<span>,&nbsp;</span>" : ""}`).join("")}
+              </span>
+            </footer>
+          </div>
+        </article>
+      `;
+
+      const applyFilters = () => {
+        const params = new URLSearchParams(window.location.search);
+        const q = normalizeText(params.get("q"));
+        const category = params.get("category") || "";
+        const deadline = params.get("deadline") || "";
+        const published = params.get("published") || "";
+
+        if (form) {
+          form.elements.namedItem("q").value = params.get("q") || "";
+          form.elements.namedItem("category").value = category;
+          form.elements.namedItem("deadline").value = deadline;
+          form.elements.namedItem("published").value = published;
+        }
+
+        const filtered = jobs.filter((job) => {
+          const haystack = normalizeText([
+            job.title,
+            job.excerpt,
+            job.postCount,
+            job.deadline,
+            job.categories.join(" "),
+            job.categorySlugs.join(" "),
+          ].join(" "));
+          const matchesKeyword = !q || haystack.includes(q);
+          const matchesCategory = !category || category === "all-bd-jobs" || job.categorySlugs.includes(category);
+          return matchesKeyword && matchesCategory && isWithinDeadlineRange(job.deadline, deadline) && isWithinPublishedRange(job.publishedDate, published);
+        });
+
+        results.innerHTML = filtered.map(renderJob).join("");
+        empty.hidden = filtered.length > 0;
+
+        const activeFilters = [];
+        if (q) activeFilters.push(`"${escapeHtml(params.get("q"))}"`);
+        if (category) activeFilters.push(`category: ${escapeHtml(category)}`);
+        if (deadline) activeFilters.push(`deadline: ${escapeHtml(deadline)}`);
+        if (published) activeFilters.push(`published: ${escapeHtml(published)}`);
+
+        summary.innerHTML = activeFilters.length
+          ? `${filtered.length}টি চাকরির ফলাফল পাওয়া গেছে (${activeFilters.join(", ")})`
+          : `সব চাকরির ফলাফল দেখানো হচ্ছে (${filtered.length}টি)।`;
+      };
+
+      if (form) {
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const params = new URLSearchParams(new FormData(form));
+          for (const [key, value] of [...params.entries()]) {
+            if (!value) params.delete(key);
+          }
+          const query = params.toString();
+          history.replaceState(null, "", query ? `/search/?${query}` : "/search/");
+          applyFilters();
+        });
+      }
+
+      applyFilters();
+    </script>
   </main>
 </BaseLayout>
