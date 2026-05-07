@@ -6,7 +6,7 @@ import Sidebar from "@/components/Sidebar.astro";
 export async function getStaticPaths() {
   const jobs = await getCollection("jobs");
   return jobs.map((job) => ({
-    params: { slug: job.data.slug },
+    params: { slug: job.slug },
     props: { job },
   }));
 }
@@ -20,7 +20,7 @@ const displayDate = new Intl.DateTimeFormat("en-GB", {
 }).format(new Date(job.data.publishedDate));
 ---
 
-<BaseLayout title={`${job.data.title} - GovtJobBD`} description={job.data.excerpt} canonicalPath={`/${job.data.slug}/`}>
+<BaseLayout title={`${job.data.title} - GovtJobBD`} description={job.data.excerpt} canonicalPath={`/${job.slug}/`}>
   <main class="container content-grid">
     <article class="page-card">
       <h1>{job.data.title}</h1>

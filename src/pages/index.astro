@@ -35,7 +35,7 @@ const middleLinks = [
           {
             jobs.slice(0, 5).map((job, index) => (
               <>
-                <JobCard {...job.data} />
+                <JobCard {...job.data} slug={job.slug} />
                 {index === 3 && <SeeMoreBox items={middleLinks} />}
               </>
             ))

@@ -26,7 +26,7 @@ const jobs = allJobs.filter((job) => category.slug === "all-bd-jobs" || job.data
         <p>{category.name} সংক্রান্ত সর্বশেষ চাকরির খবর ও নিয়োগ বিজ্ঞপ্তি।</p>
       </section>
       <div class="post-list">
-        {jobs.map((job) => <JobCard {...job.data} />)}
+        {jobs.map((job) => <JobCard {...job.data} slug={job.slug} />)}
       </div>
       <Pagination />
     </div>

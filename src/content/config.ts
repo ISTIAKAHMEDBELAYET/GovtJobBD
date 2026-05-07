@@ -4,7 +4,6 @@ const jobs = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    slug: z.string(),
     publishedDate: z.string(),
     author: z.string().default("Admin"),
     categories: z.array(z.string()),
