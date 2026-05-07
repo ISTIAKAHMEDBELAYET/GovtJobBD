@@ -673,7 +673,7 @@ textarea {
   .main-navigation {
     background: var(--accent);
     margin-bottom: 8px;
-    min-height: 38px;
+    min-height: 48px;
   }
 
   .main-navigation .container {
@@ -683,62 +683,48 @@ textarea {
   .main-navigation__inner {
     position: relative;
     width: 100%;
-    min-height: 38px;
-    padding: 0 8px;
+    min-height: 48px;
+    padding: 0 12px;
     align-items: center;
+    justify-content: space-between;
     overflow: visible;
   }
 
   .mobile-nav-brand {
     display: inline-flex;
     align-items: center;
-    width: 86px;
-    height: 38px;
-    flex: 0 0 86px;
-    margin-right: 6px;
+    height: 48px;
+    flex: 0 0 auto;
+    margin-right: auto;
   }
 
   .mobile-nav-brand img {
-    width: 86px;
+    width: 160px;
     height: auto;
     aspect-ratio: 520 / 150;
   }
 
   .nav-list {
-    flex: 1 1 auto;
-    flex-wrap: nowrap;
-    min-width: 0;
-  }
-
-  .nav-list > li:not(:first-child) {
     display: none;
-  }
-
-  .nav-list a {
-    min-height: 38px;
-    padding: 0 6px;
-    white-space: nowrap;
-    font-size: 15px;
-    font-weight: 700;
   }
 
   .search-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    min-width: 38px;
-    min-height: 38px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 48px;
     padding: 0;
     color: #fff;
     background: transparent;
     border: 0;
-    flex: 0 0 38px;
+    flex: 0 0 44px;
   }
 
   .search-toggle .icon-search {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
   }
 
   .mobile-menu {
@@ -750,9 +736,9 @@ textarea {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    min-height: 38px;
-    padding: 0 2px 0 6px;
+    gap: 6px;
+    min-height: 48px;
+    padding: 0 8px;
     color: #fff;
     font-size: 15px;
     font-weight: 700;
