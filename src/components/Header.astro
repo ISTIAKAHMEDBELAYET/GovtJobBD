@@ -3,9 +3,11 @@ import { site } from "@/data/site";
 ---
 
 <header class="site-header">
-  <div class="site-header__inner">
-    <a class="site-logo" href="/" aria-label={`${site.name} home`}>
-      <img src="/images/logo.svg" alt={site.name} width="260" height="85" />
-    </a>
+  <div class="inside-header grid-container">
+    <div class="site-logo-wrapper">
+      <a class="site-logo" href="/" aria-label={`${site.name} home`}>
+        <img src="/images/logo.svg" alt={site.name} width="320" height="105" />
+      </a>
+    </div>
   </div>
 </header>
