@@ -298,7 +298,7 @@ textarea {
   align-items: start;
 }
 
-.grid-container {
+.inside-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;
   gap: 24px;
