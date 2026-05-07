@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 150 150">
+  <!-- Green outer circle -->
+  <circle cx="75" cy="75" r="70" fill="#0bb13a"/>
+  <!-- Red inner circle -->
+  <circle cx="75" cy="75" r="50" fill="#ed1c24"/>
+  <!-- Green rotated rectangle at end -->
+  <rect x="110" y="85" width="60" height="30" rx="8" transform="rotate(45 110 85)" fill="#0bb13a"/>
+</svg>
