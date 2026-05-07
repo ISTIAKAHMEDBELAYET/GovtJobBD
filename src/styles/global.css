@@ -85,7 +85,7 @@ textarea {
 }
 
 .site-header {
-  background: #fff;
+  background: var(--base-3);
 }
 
 .site-header__inner {
@@ -111,7 +111,7 @@ textarea {
 .main-navigation {
   position: relative;
   z-index: 100;
-  background: #fff;
+  background: transparent;
   margin-bottom: 10px;
   min-height: 60px;
 }
