@@ -85,14 +85,14 @@ textarea {
 }
 
 .site-header {
-  background: var(--base-3);
+  background: #fff;
 }
 
 .site-header__inner {
-  display: flex;
-  align-items: center;
   min-height: 95px;
-  padding: 10px 0;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 10px 40px;
 }
 
 .site-logo {
@@ -111,7 +111,7 @@ textarea {
 .main-navigation {
   position: relative;
   z-index: 100;
-  background: transparent;
+  background: #fff;
   margin-bottom: 10px;
   min-height: 60px;
 }
