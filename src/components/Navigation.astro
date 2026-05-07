@@ -1,0 +1,25 @@
+---
+const menuItems = [
+  { label: 'Home', href: '/' },
+  { label: 'সকল চাকরি', href: '/jobs' },
+  { label: 'সরকারি চাকরি', href: '/govt-jobs' },
+  { label: 'ব্যাংক চাকরি', href: '/bank-jobs' },
+  { label: 'প্রাইভেট চাকরি', href: '/private-jobs' },
+  { label: 'এনজিও চাকরি', href: '/ngo-jobs' },
+  { label: 'অনলাইন আবেদন', href: '/online-apply' },
+  { label: 'হট জবস', href: '/hot-jobs' },
+  { label: 'নোটিশ', href: '/notice' },
+  { label: 'Search Jobs', href: '/search' },
+  { label: 'Age Calculator', href: '/age-calculator' },
+];
+---
+
+<nav class="bg-brand-700 text-white">
+  <ul class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-1 px-2 py-2 text-sm font-medium md:text-base">
+    {menuItems.map((item) => (
+      <li>
+        <a class="block rounded px-3 py-2 hover:bg-brand-600" href={item.href}>{item.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
