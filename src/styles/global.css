@@ -1,3 +1,43 @@
+@font-face {
+  font-family: "Noto Sans Bengali";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/noto-sans-bengali-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Bengali";
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url("/fonts/noto-sans-bengali-500.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Bengali";
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url("/fonts/noto-sans-bengali-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Bengali";
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url("/fonts/noto-sans-bengali-700.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Bengali";
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: url("/fonts/noto-sans-bengali-800.ttf") format("truetype");
+}
+
 :root {
   --contrast: #222222;
   --muted: #575760;
@@ -14,7 +54,7 @@
   --footer-accent: #f1c40f;
   --shadow-card: 0 4px 12px rgb(0 0 0 / 0.04);
   --shadow-info: 0 4px 12px rgb(0 0 0 / 0.08);
-  font-family: "Noto Sans Bengali", "Hind Siliguri", "SolaimanLipi", Bangla, Arial, sans-serif;
+  font-family: "Noto Sans Bengali", "Nirmala UI", "Segoe UI", Arial, sans-serif;
 }
 
 * {
@@ -81,7 +121,7 @@ textarea {
 }
 
 .site-header__inner {
-  min-height: 116px;
+  min-height: 95px;
   max-width: 1280px;
   margin-inline: auto;
   padding: 10px 40px;
@@ -90,14 +130,14 @@ textarea {
 .site-logo {
   display: inline-block;
   width: 260px;
-  aspect-ratio: 300 / 120;
+  aspect-ratio: 520 / 150;
   max-width: 72vw;
 }
 
 .site-logo img {
   width: 100%;
   height: auto;
-  aspect-ratio: 300 / 120;
+  aspect-ratio: 520 / 150;
 }
 
 .main-navigation {
@@ -638,8 +678,8 @@ textarea {
 
   .mobile-nav-brand img {
     width: 78px;
-    height: 23px;
-    aspect-ratio: 92 / 27;
+    height: auto;
+    aspect-ratio: 520 / 150;
   }
 
   .nav-list {

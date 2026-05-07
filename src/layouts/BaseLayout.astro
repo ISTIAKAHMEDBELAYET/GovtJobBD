@@ -36,7 +36,52 @@ const ogImage = new URL("/images/job-placeholder.svg", site.url).toString();
     <meta property="og:site_name" content={site.name} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href="/fonts/noto-sans-bengali-400.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/noto-sans-bengali-500.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/noto-sans-bengali-600.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/noto-sans-bengali-700.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/noto-sans-bengali-800.ttf" as="font" type="font/ttf" crossorigin />
     <style is:inline>
+      @font-face {
+        font-family: "Noto Sans Bengali";
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url("/fonts/noto-sans-bengali-400.ttf") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Noto Sans Bengali";
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url("/fonts/noto-sans-bengali-500.ttf") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Noto Sans Bengali";
+        font-style: normal;
+        font-weight: 600;
+        font-display: block;
+        src: url("/fonts/noto-sans-bengali-600.ttf") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Noto Sans Bengali";
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url("/fonts/noto-sans-bengali-700.ttf") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Noto Sans Bengali";
+        font-style: normal;
+        font-weight: 800;
+        font-display: block;
+        src: url("/fonts/noto-sans-bengali-800.ttf") format("truetype");
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -50,7 +95,7 @@ const ogImage = new URL("/images/job-placeholder.svg", site.url).toString();
       body {
         margin: 0;
         min-width: 240px;
-        font-family: "Noto Sans Bengali", "Hind Siliguri", "SolaimanLipi", Bangla, Arial, sans-serif;
+        font-family: "Noto Sans Bengali", "Nirmala UI", "Segoe UI", Arial, sans-serif;
         font-size: 17px;
         line-height: 1.65;
       }
@@ -62,14 +107,14 @@ const ogImage = new URL("/images/job-placeholder.svg", site.url).toString();
       }
 
       .site-header__inner {
-        min-height: 116px;
+        min-height: 95px;
       }
 
       .site-logo,
       .site-logo img {
         width: 260px;
         max-width: 72vw;
-        aspect-ratio: 300 / 120;
+        aspect-ratio: 520 / 150;
       }
 
       .main-navigation {
@@ -171,12 +216,6 @@ const ogImage = new URL("/images/job-placeholder.svg", site.url).toString();
         }
       }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=optional"
-      rel="stylesheet"
-    />
     <title>{title}</title>
   </head>
   <body>
