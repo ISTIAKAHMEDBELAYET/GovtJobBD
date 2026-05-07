@@ -1,14 +1,52 @@
-<nav class="pagination-wrap" aria-label="Posts pagination">
-  <div class="pagination">
-    <span class="current">1</span>
-    <a href="/page/2/">2</a>
-    <span>...</span>
-    <a href="/page/150/">150</a>
-    <a class="next" href="/page/2/">
-      <span>Next</span>
-      <svg class="icon-arrow-right" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12.6 5.4 18.2 11H4v2h14.2l-5.6 5.6L14 20l8-8-8-8z"></path>
-      </svg>
-    </a>
-  </div>
-</nav>
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const { currentPage, totalPages } = Astro.props;
+
+const pageHref = (page: number) => (page === 1 ? "/" : `/page/${page}/`);
+
+const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+const visiblePages = pages.filter((page) => {
+  return page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1;
+});
+---
+
+{
+  totalPages > 1 && (
+    <nav class="pagination-wrap" aria-label="Posts pagination">
+      <div class="pagination">
+        {currentPage > 1 && (
+          <a class="prev" href={pageHref(currentPage - 1)}>
+            <svg class="icon-arrow-left" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11.4 18.6 5.8 13H20v-2H5.8l5.6-5.6L10 4l-8 8 8 8z"></path>
+            </svg>
+            <span>Prev</span>
+          </a>
+        )}
+
+        {visiblePages.map((page, index) => (
+          <>
+            {index > 0 && page - visiblePages[index - 1] > 1 && <span class="dots">...</span>}
+            {page === currentPage ? (
+              <span class="current" aria-current="page">{page}</span>
+            ) : (
+              <a href={pageHref(page)}>{page}</a>
+            )}
+          </>
+        ))}
+
+        {currentPage < totalPages && (
+          <a class="next" href={pageHref(currentPage + 1)}>
+            <span>Next</span>
+            <svg class="icon-arrow-right" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.6 5.4 18.2 11H4v2h14.2l-5.6 5.6L14 20l8-8-8-8z"></path>
+            </svg>
+          </a>
+        )}
+      </div>
+    </nav>
+  )
+}

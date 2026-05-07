@@ -1,19 +1,46 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import JobCard from "@/components/JobCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import Sidebar from "@/components/Sidebar.astro";
 
-export function getStaticPaths() {
-  return [
-    { params: { page: "2" } },
-    { params: { page: "150" } },
-  ];
+const postsPerPage = 10;
+
+export async function getStaticPaths() {
+  const allJobs = (await getCollection("jobs")).sort(
+    (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime(),
+  );
+  const totalPages = Math.ceil(allJobs.length / postsPerPage);
+
+  return Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => {
+    const currentPage = index + 2;
+    const start = (currentPage - 1) * postsPerPage;
+
+    return {
+      params: { page: String(currentPage) },
+      props: {
+        currentPage,
+        totalPages,
+        jobs: allJobs.slice(start, start + postsPerPage),
+      },
+    };
+  });
 }
+
+const { currentPage, totalPages, jobs } = Astro.props;
 ---
 
-<BaseLayout title={`চাকরির খবর - Page ${Astro.params.page} - GovtJobBD`} description="GovtJobBD paginated job circular archive." canonicalPath={`/page/${Astro.params.page}/`}>
-  <main class="container">
-    <article class="page-card">
-      <h1>চাকরির খবর - Page {Astro.params.page}</h1>
-      <p>Pagination archive layout পরবর্তী content batch যুক্ত হলে এখানে ব্যবহার করা হবে।</p>
-    </article>
+<BaseLayout title={`চাকরির খবর - Page ${currentPage} - GovtJobBD`} description="GovtJobBD paginated job circular archive." canonicalPath={`/page/${currentPage}/`}>
+  <main class="container" id="content">
+    <div class="content-grid">
+      <div>
+        <div class="post-list">
+          {jobs.map((job) => <JobCard {...job.data} slug={job.slug} />)}
+        </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      </div>
+      <Sidebar />
+    </div>
   </main>
 </BaseLayout>
