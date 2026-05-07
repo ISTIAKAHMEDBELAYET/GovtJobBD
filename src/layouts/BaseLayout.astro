@@ -179,12 +179,91 @@ const ogImage = new URL("/images/job-placeholder.svg", site.url).toString();
           min-height: 38px;
         }
       }
+
+      .nav-search-bar {
+        background: #e8eaed;
+        padding: 12px 0;
+        border-bottom: 1px solid #d1d5db;
+      }
+
+      .nav-search-form {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 0 20px;
+      }
+
+      .nav-search-form input {
+        flex: 1;
+        height: 44px;
+        padding: 0 16px;
+        border: 2px solid #575760;
+        border-radius: 4px;
+        font-size: 16px;
+        font-family: inherit;
+      }
+
+      .nav-search-form input:focus {
+        outline: none;
+        border-color: #004ddd;
+      }
+
+      .nav-search-form button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 20px;
+        height: 44px;
+        background: #575760;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-family: inherit;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .nav-search-form button:hover {
+        background: #004ddd;
+      }
+
+      .nav-search-form .icon-search {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+
+      @media (max-width: 768px) {
+        .nav-search-form button span {
+          display: none;
+        }
+
+        .nav-search-form button {
+          padding: 0 14px;
+        }
+      }
     </style>
     <title>{title}</title>
   </head>
   <body>
     <Header />
     <MainNav />
+    <section class="nav-search-bar">
+      <div class="container">
+        <form class="nav-search-form" action="/search/" method="get">
+          <input type="search" name="q" placeholder="কিওয়ার্ড লিখে চাকরি খুঁজুন..." aria-label="Search jobs" />
+          <button type="submit" aria-label="Submit search">
+            <svg class="icon-search" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9.5 3a6.5 6.5 0 0 1 5.17 10.44l4.44 4.45-1.41 1.41-4.45-4.44A6.5 6.5 0 1 1 9.5 3Zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z"></path>
+            </svg>
+            <span>সার্চ</span>
+          </button>
+        </form>
+      </div>
+    </section>
     <slot />
     <Footer />
   </body>

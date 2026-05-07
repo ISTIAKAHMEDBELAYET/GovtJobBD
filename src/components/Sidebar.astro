@@ -4,18 +4,6 @@ import { categories } from "@/data/site";
 
 <aside class="sidebar" aria-label="Sidebar">
   <section class="sidebar-widget">
-    <h2 class="widget-title">এখানে চাকরি খুজুন...</h2>
-    <form class="sidebar-search" action="/search/" method="get">
-      <input type="search" name="q" placeholder="Search ..." aria-label="Search jobs" />
-      <button type="submit" aria-label="Submit search">
-        <svg class="icon-search" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9.5 3a6.5 6.5 0 0 1 5.17 10.44l4.44 4.45-1.41 1.41-4.45-4.44A6.5 6.5 0 1 1 9.5 3Zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z"></path>
-        </svg>
-      </button>
-    </form>
-  </section>
-
-  <section class="sidebar-widget">
     <h2 class="widget-title">জব ক্যাটাগরি</h2>
     <ul class="sidebar-list">
       {categories.map((category) => <li><a href={`/category/${category.slug}/`}>{category.name}</a></li>)}

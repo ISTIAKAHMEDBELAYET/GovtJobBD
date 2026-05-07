@@ -34,8 +34,8 @@ const searchIndex = jobs.map((job) => ({
     </div>
 
     <article class="page-card search-empty" id="search-empty" hidden>
-      <h1>কোনো চাকরি পাওয়া যায়নি</h1>
-      <p>অন্য কিওয়ার্ড দিয়ে আবার সার্চ করুন।</p>
+      <h1>🔎 কোনো চাকরির সার্কুলার পাওয়া যায়নি</h1>
+      <p>💡 ভিন্ন কিওয়ার্ড দিয়ে আবার সার্চ করুন</p>
     </article>
 
     <script type="application/json" id="search-data" set:html={JSON.stringify(searchIndex)}></script>
@@ -136,8 +136,8 @@ const searchIndex = jobs.map((job) => ({
         empty.hidden = filtered.length > 0;
 
         summary.innerHTML = q
-          ? `${filtered.length}টি চাকরির ফলাফল পাওয়া গেছে "${escapeHtml(params.get("q"))}" এর জন্য`
-          : `সব চাকরির ফলাফল দেখানো হচ্ছে (${filtered.length}টি)।`;
+          ? `📄 ${filtered.length}টি চাকরির সার্কুলার পাওয়া গেছে`
+          : `📄 সব চাকরির সার্কুলার দেখানো হচ্ছে (${filtered.length}টি)`;
       };
 
       if (form) {

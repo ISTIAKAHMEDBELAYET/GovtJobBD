@@ -239,12 +239,15 @@ textarea {
 }
 
 .filter-box {
-  padding: 40px 25px 20px;
+  display: flex;
+  gap: 12px;
+  padding: 30px 25px;
   box-shadow: 0 10px 24px rgb(0 0 0 / 0.02);
 }
 
 .filter-keyword {
-  margin-bottom: 24px;
+  flex: 1;
+  margin-bottom: 0;
 }
 
 .filter-grid {
@@ -276,6 +279,7 @@ textarea {
 
 .filter-submit {
   height: 48px;
+  padding: 0 24px;
   border: 0;
   border-radius: 8px;
   background: var(--green);
@@ -283,6 +287,7 @@ textarea {
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .content-grid {
@@ -574,6 +579,27 @@ textarea {
   display: none;
 }
 
+.search-empty {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.search-empty .empty-icon {
+  margin-bottom: 20px;
+}
+
+.search-empty h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  color: var(--title);
+}
+
+.search-empty p {
+  margin: 0;
+  font-size: 18px;
+  color: #666;
+}
+
 .page-card {
   margin: 20px 0 40px;
   padding: 40px;
@@ -795,7 +821,7 @@ textarea {
   }
 
   .filter-keyword {
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 
   .filter-grid {
@@ -808,11 +834,17 @@ textarea {
   }
 
   .field input,
-  .field select,
-  .filter-submit {
+  .field select {
     height: 34px;
     border-radius: 4px;
     padding: 0 8px;
+    font-size: 16px;
+  }
+
+  .filter-submit {
+    height: 34px;
+    border-radius: 4px;
+    padding: 0 16px;
     font-size: 16px;
   }
 
