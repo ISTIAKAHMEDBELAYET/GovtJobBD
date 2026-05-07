@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import JobCard from "@/components/JobCard.astro";
 import Pagination from "@/components/Pagination.astro";
 import Sidebar from "@/components/Sidebar.astro";
+import FilterBox from "@/components/FilterBox.astro";
 import { site } from "@/data/site";
 
 const jobs = (await getCollection("jobs")).sort(
@@ -16,22 +17,10 @@ const currentJobs = jobs.slice(0, postsPerPage);
 ---
 
 <BaseLayout title={site.title} description={site.description}>
-  <section class="nav-search-bar">
-    <div class="container">
-      <form class="nav-search-form" action="/search/" method="get">
-        <input type="search" name="q" placeholder="কিওয়ার্ড লিখে চাকরি খুঁজুন..." aria-label="Search jobs" />
-        <button type="submit" aria-label="Submit search">
-          <svg class="icon-search" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-            <path d="M9.5 3a6.5 6.5 0 0 1 5.17 10.44l4.44 4.45-1.41 1.41-4.45-4.44A6.5 6.5 0 1 1 9.5 3Zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z"/>
-          </svg>
-          <span>সার্চ</span>
-        </button>
-      </form>
-    </div>
-  </section>
   <main class="container" id="content">
     <div class="content-grid">
       <div>
+        <FilterBox />
         <div class="post-list">
           {currentJobs.map((job) => <JobCard {...job.data} slug={job.slug} />)}
         </div>
