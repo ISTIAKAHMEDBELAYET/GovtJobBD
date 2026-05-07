@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FilterBox from "@/components/FilterBox.astro";
+import JobCard from "@/components/JobCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import SeeMoreBox from "@/components/SeeMoreBox.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import { site } from "@/data/site";
+
+const jobs = (await getCollection("jobs")).sort(
+  (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime(),
+);
+
+const topLinks = [
+  { label: "নিয়োগ নোটিশ", href: "/category/notice/" },
+  { label: "ACI নিয়োগ", href: "/aci-job-circular/" },
+  { label: "DMLC Job", href: "/dmlc-job-circular/" },
+];
+
+const middleLinks = [
+  { label: "সরকারি চাকরির খবর", href: "/category/government-job/" },
+  { label: "সকল চাকরি", href: "/category/all-bd-jobs/" },
+  { label: "Government & Public Sector Jobs", href: "/category/government-job/" },
+];
+---
+
+<BaseLayout title={site.title} description={site.description}>
+  <FilterBox />
+  <main class="container" id="content">
+    <SeeMoreBox items={topLinks} />
+    <div class="content-grid">
+      <div>
+        <div class="post-list">
+          {
+            jobs.slice(0, 5).map((job, index) => (
+              <>
+                <JobCard {...job.data} />
+                {index === 3 && <SeeMoreBox items={middleLinks} />}
+              </>
+            ))
+          }
+        </div>
+        <Pagination />
+      </div>
+      <Sidebar />
+    </div>
+  </main>
+</BaseLayout>

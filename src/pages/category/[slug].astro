@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import JobCard from "@/components/JobCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import { categories } from "@/data/site";
+
+export async function getStaticPaths() {
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const allJobs = await getCollection("jobs");
+const jobs = allJobs.filter((job) => category.slug === "all-bd-jobs" || job.data.categorySlugs.includes(category.slug));
+---
+
+<BaseLayout title={`${category.name} - GovtJobBD`} description={`${category.name} সংক্রান্ত সর্বশেষ নিয়োগ বিজ্ঞপ্তি।`} canonicalPath={`/category/${category.slug}/`}>
+  <main class="container content-grid">
+    <div>
+      <section class="page-card">
+        <h1>{category.name}</h1>
+        <p>{category.name} সংক্রান্ত সর্বশেষ চাকরির খবর ও নিয়োগ বিজ্ঞপ্তি।</p>
+      </section>
+      <div class="post-list">
+        {jobs.map((job) => <JobCard {...job.data} />)}
+      </div>
+      <Pagination />
+    </div>
+    <Sidebar />
+  </main>
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
+
+export async function getStaticPaths() {
+  const jobs = await getCollection("jobs");
+  return jobs.map((job) => ({
+    params: { slug: job.data.slug },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+const { Content } = await render(job);
+const displayDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(new Date(job.data.publishedDate));
+---
+
+<BaseLayout title={`${job.data.title} - GovtJobBD`} description={job.data.excerpt} canonicalPath={`/${job.data.slug}/`}>
+  <main class="container content-grid">
+    <article class="page-card">
+      <h1>{job.data.title}</h1>
+      <div class="entry-meta">{displayDate} by {job.data.author}</div>
+      <img src={job.data.image} alt={job.data.title} width="768" height="427" />
+      <div class="job-info-box">
+        <span class="job-label">পদের সংখ্যা:</span>
+        <span class="job-value">{job.data.postCount}</span>
+      </div>
+      <div class="job-info-box">
+        <span class="job-label">আবেদনের শেষ তারিখ:</span>
+        <span class="job-value">{job.data.deadline}</span>
+      </div>
+      <Content />
+      {job.data.applyUrl && <a class="read-more" href={job.data.applyUrl}>অনলাইনে আবেদন করুন</a>}
+    </article>
+    <Sidebar />
+  </main>
+</BaseLayout>

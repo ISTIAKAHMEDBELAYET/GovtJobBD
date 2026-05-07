@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="150" viewBox="0 0 520 150" role="img" aria-labelledby="title desc">
+  <title id="title">GovtJobBD logo</title>
+  <desc id="desc">Bangla government job circular logo mark</desc>
+  <rect width="520" height="150" fill="white"/>
+  <circle cx="78" cy="70" r="48" fill="#0bb13a"/>
+  <circle cx="78" cy="70" r="34" fill="#ed1c24"/>
+  <path d="M75 38c11 10 22 19 20 37-2 14-12 25-20 36-10-15-23-28-21-48 2-12 10-20 21-25z" fill="#f7d116"/>
+  <rect x="126" y="28" width="285" height="54" rx="8" fill="#f7c900"/>
+  <rect x="126" y="78" width="285" height="32" rx="5" fill="#333"/>
+  <text x="145" y="66" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#111">সরকারি চাকরি</text>
+  <text x="150" y="101" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#fff">www.govtjobbd.com</text>
+  <rect x="111" y="104" width="78" height="18" rx="9" transform="rotate(45 111 104)" fill="#0bb13a"/>
+</svg>

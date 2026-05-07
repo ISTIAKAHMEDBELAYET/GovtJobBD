@@ -1,0 +1,42 @@
+---
+import { categories } from "@/data/site";
+---
+
+<section class="filter-section">
+  <div class="container">
+    <form class="filter-box" action="/search/" method="get">
+      <div class="field filter-keyword">
+        <label class="sr-only" for="keyword">কিওয়ার্ড লিখে চাকরি খুঁজুন</label>
+        <input id="keyword" type="search" name="q" placeholder="কিওয়ার্ড লিখে চাকরি খুঁজুন" />
+      </div>
+      <div class="filter-grid">
+        <div class="field">
+          <label for="category">ক্যাটাগরি</label>
+          <select id="category" name="category">
+            <option value="">সকল ক্যাটাগরি</option>
+            {categories.map((category) => <option value={category.slug}>{category.name}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="deadline">আবেদনের সময়সীমা</label>
+          <select id="deadline" name="deadline">
+            <option value="">যেকোনো সময়সীমা</option>
+            <option value="today">আজ শেষ</option>
+            <option value="7-days">আগামী ৭ দিনের মধ্যে</option>
+            <option value="30-days">আগামী ৩০ দিনের মধ্যে</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="published">প্রকাশের তারিখ</label>
+          <select id="published" name="published">
+            <option value="">যেকোনো প্রকাশের তারিখ</option>
+            <option value="24-hours">গত ২৪ ঘন্টা</option>
+            <option value="7-days">গত ৭ দিন</option>
+            <option value="30-days">গত ৩০ দিন</option>
+          </select>
+        </div>
+        <button class="filter-submit" type="submit">সার্চ করুন</button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  publishedDate: string;
+  author: string;
+  categories: string[];
+  categorySlugs: string[];
+  postCount: string;
+  deadline: string;
+  image: string;
+  excerpt: string;
+}
+
+const job = Astro.props;
+const displayDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(new Date(job.publishedDate));
+---
+
+<article class="job-card">
+  <h2 class="entry-title"><a href={`/${job.slug}/`}>{job.title}</a></h2>
+  <div class="entry-meta">{displayDate} by {job.author}</div>
+  <div class="job-card__body">
+    <a class="job-card__image" href={`/${job.slug}/`}>
+      <img src={job.image} alt={job.title} width="768" height="427" loading="lazy" />
+    </a>
+    <div class="job-card__facts">
+      <div class="job-info-box">
+        <span class="job-label">পদের সংখ্যা:</span>
+        <span class="job-value">{job.postCount}</span>
+      </div>
+      <div class="job-info-box">
+        <span class="job-label">আবেদনের শেষ তারিখ:</span>
+        <span class="job-value">{job.deadline}</span>
+      </div>
+      <a class="read-more" href={`/${job.slug}/`}>... বিস্তারিত পড়ুন</a>
+    </div>
+  </div>
+  <div class="job-cats">
+    <span aria-hidden="true">📁</span>
+    {
+      job.categories.map((category, index) => (
+        <a href={`/category/${job.categorySlugs[index]}/`}>{category}{index < job.categories.length - 1 ? "," : ""}</a>
+      ))
+    }
+  </div>
+</article>

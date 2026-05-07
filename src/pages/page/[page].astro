@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { page: "2" } },
+    { params: { page: "150" } },
+  ];
+}
+---
+
+<BaseLayout title={`চাকরির খবর - Page ${Astro.params.page} - GovtJobBD`} description="GovtJobBD paginated job circular archive." canonicalPath={`/page/${Astro.params.page}/`}>
+  <main class="container">
+    <article class="page-card">
+      <h1>চাকরির খবর - Page {Astro.params.page}</h1>
+      <p>Pagination archive layout পরবর্তী content batch যুক্ত হলে এখানে ব্যবহার করা হবে।</p>
+    </article>
+  </main>
+</BaseLayout>

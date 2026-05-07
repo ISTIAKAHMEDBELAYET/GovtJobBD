@@ -1,0 +1,29 @@
+---
+import { categories } from "@/data/site";
+---
+
+<aside class="sidebar" aria-label="Sidebar">
+  <section class="sidebar-widget">
+    <h2 class="widget-title">এখানে চাকরি খুজুন...</h2>
+    <form class="sidebar-search" action="/search/" method="get">
+      <input type="search" name="q" placeholder="Search ..." aria-label="Search jobs" />
+      <button type="submit" aria-label="Submit search">🔍</button>
+    </form>
+  </section>
+
+  <section class="sidebar-widget">
+    <h2 class="widget-title">জব ক্যাটাগরি</h2>
+    <ul class="sidebar-list">
+      {categories.map((category) => <li><a href={`/category/${category.slug}/`}>{category.name}</a></li>)}
+    </ul>
+  </section>
+
+  <section class="sidebar-widget">
+    <h2 class="widget-title">আরও দেখুন</h2>
+    <ul class="sidebar-list">
+      <li><a href="/category/all-bd-jobs/">All BD Jobs ›</a></li>
+      <li><a href="/category/online-application/">অনলাইন আবেদন ›</a></li>
+      <li><a href="/category/private-job/">প্রাইভেট চাকরি ›</a></li>
+    </ul>
+  </section>
+</aside>
