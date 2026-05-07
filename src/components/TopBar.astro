@@ -1,0 +1,20 @@
+---
+const today = new Intl.DateTimeFormat('bn-BD', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date());
+---
+
+<div class="bg-brand-900 text-sm text-white">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2">
+    <p>আজ: {today}</p>
+    <div class="flex items-center gap-4">
+      <a class="hover:text-accent" href="/about">About</a>
+      <a class="hover:text-accent" href="/contact">Contact</a>
+      <a class="hover:text-accent" href="/privacy">Privacy</a>
+      <a class="hover:text-accent" href="/search" aria-label="Search Jobs">🔍</a>
+    </div>
+  </div>
+</div>
