@@ -20,31 +20,53 @@ const displayDate = new Intl.DateTimeFormat("en-GB", {
 }).format(new Date(job.publishedDate));
 ---
 
-<article class="job-card">
-  <h2 class="entry-title"><a href={`/${job.slug}/`}>{job.title}</a></h2>
-  <div class="entry-meta">{displayDate} by {job.author}</div>
-  <div class="job-card__body">
-    <a class="job-card__image" href={`/${job.slug}/`}>
-      <img src={job.image} alt={job.title} width="768" height="427" loading="lazy" />
-    </a>
-    <div class="job-card__facts">
-      <div class="job-info-box">
-        <span class="job-label">পদের সংখ্যা:</span>
-        <span class="job-value">{job.postCount}</span>
+<article class="job-card post type-post status-publish format-standard has-post-thumbnail hentry resize-featured-image" itemtype="https://schema.org/CreativeWork" itemscope>
+  <div class="inside-article">
+    <header class="entry-header">
+      <h2 class="entry-title" itemprop="headline">
+        <a href={`/${job.slug}/`} rel="bookmark">{job.title}</a>
+      </h2>
+      <div class="entry-meta">
+        <span class="posted-on">
+          <time class="entry-date published" datetime={job.publishedDate} itemprop="datePublished">{displayDate}</time>
+        </span>
+        <span class="byline"> by <span class="author vcard" itemprop="author" itemtype="https://schema.org/Person" itemscope><span class="author-name" itemprop="name">{job.author}</span></span></span>
       </div>
-      <div class="job-info-box">
-        <span class="job-label">আবেদনের শেষ তারিখ:</span>
-        <span class="job-value">{job.deadline}</span>
-      </div>
-      <a class="read-more" href={`/${job.slug}/`}>... বিস্তারিত পড়ুন</a>
+    </header>
+
+    <div class="post-image">
+      <a href={`/${job.slug}/`}>
+        <img src={job.image} alt={job.title} width="768" height="427" loading="lazy" itemprop="image" />
+      </a>
     </div>
-  </div>
-  <div class="job-cats">
-    <span aria-hidden="true">📁</span>
-    {
-      job.categories.map((category, index) => (
-        <a href={`/category/${job.categorySlugs[index]}/`}>{category}{index < job.categories.length - 1 ? "," : ""}</a>
-      ))
-    }
+
+    <div class="job-info-box job-vacancy">
+      <div class="job-label">পদের সংখ্যা:</div>
+      <div class="job-value">{job.postCount}</div>
+    </div>
+    <div class="job-info-box job-deadline">
+      <div class="job-label">আবেদনের শেষ তারিখ:</div>
+      <div class="job-value">{job.deadline}</div>
+    </div>
+
+    <div class="entry-summary" itemprop="text">
+      <p> … <a title={job.title} class="read-more" href={`/${job.slug}/`} aria-label={`Read more about ${job.title}`}>বিস্তারিত পড়ুন</a></p>
+    </div>
+
+    <footer class="entry-meta entry-footer" aria-label="Entry meta">
+      <span class="cat-links">
+        <span class="gp-icon icon-categories" aria-hidden="true">
+          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M0 112c0-26.51 21.49-48 48-48h110.014a48 48 0 0 1 43.592 27.907l12.349 26.791A16 16 0 0 0 228.486 128H464c26.51 0 48 21.49 48 48v224c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112z"></path></svg>
+        </span>
+        <span class="screen-reader-text">Categories </span>
+        {
+          job.categories.map((category, index) => (
+            <>
+              <a href={`/category/${job.categorySlugs[index]}/`} rel="category tag">{category}</a>{index < job.categories.length - 1 && <span>,&nbsp;</span>}
+            </>
+          ))
+        }
+      </span>
+    </footer>
   </div>
 </article>
