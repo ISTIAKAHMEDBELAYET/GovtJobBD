@@ -298,18 +298,6 @@ textarea {
   align-items: start;
 }
 
-.inside-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 24px;
-  padding: 10px 0 40px;
-  align-items: start;
-}
-
-.site-logo-wrapper {
-  padding-left: 40px;
-}
-
 .post-list {
   display: grid;
   gap: 20px;
